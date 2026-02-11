@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDLE - Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-screen">
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+    
+    <div class="admin-container" id="adminContent" style="display: none;">
+        <div class="admin-header">
+            <h1 class="admin-title">WORDLE ADMIN PANEL</h1>
+            <p class="admin-subtitle">1985 EDITION - SESSION MANAGER</p>
+        </div>
+        
+        <div class="admin-content">
+            <!-- Session Management Section -->
+            <div class="admin-section">
+                <h2 class="section-title">SESSION MANAGEMENT</h2>
+                
+                <!-- Session Selector -->
+                <div class="setting-row">
+                    <label for="sessionSelect" class="setting-label">SELECT SESSION:</label>
+                    <select id="sessionSelect" class="session-select">
+                        <option value="session-1">Session 1</option>
+                        <option value="session-2">Session 2</option>
+                        <option value="session-3">Session 3</option>
+                        <option value="session-4">Session 4</option>
+                        <option value="session-5">Session 5</option>
+                    </select>
+                </div>
+                
+                <!-- Session Name -->
+                <div class="setting-row">
+                    <label for="sessionName" class="setting-label">SESSION NAME:</label>
+                    <input 
+                        type="text" 
+                        id="sessionName" 
+                        class="setting-input" 
+                        placeholder="Beginner Challenge"
+                        maxlength="30"
+                    />
+                </div>
+                
+                <!-- Level Words -->
+                <div class="levels-config">
+                    <h3 class="levels-title">LEVEL WORDS (5 LETTERS EACH)</h3>
+                    
+                    <div class="level-input-row">
+                        <label for="level1Word" class="level-label">LEVEL 1:</label>
+                        <input 
+                            type="text" 
+                            id="level1Word" 
+                            class="level-word-input" 
+                            maxlength="5" 
+                            placeholder="CRANE"
+                        />
+                    </div>
+                    
+                    <div class="level-input-row">
+                        <label for="level2Word" class="level-label">LEVEL 2:</label>
+                        <input 
+                            type="text" 
+                            id="level2Word" 
+                            class="level-word-input" 
+                            maxlength="5" 
+                            placeholder="SLATE"
+                        />
+                    </div>
+                    
+                    <div class="level-input-row">
+                        <label for="level3Word" class="level-label">LEVEL 3:</label>
+                        <input 
+                            type="text" 
+                            id="level3Word" 
+                            class="level-word-input" 
+                            maxlength="5" 
+                            placeholder="AUDIO"
+                        />
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Session Overview Section -->
+            <div class="admin-section">
+                <h2 class="section-title">SESSION OVERVIEW</h2>
+                <div id="sessionOverview" class="session-overview-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="admin-actions">
+                <button class="admin-button button-save" id="saveSessionBtn">
+                    SAVE SESSION
+                </button>
+                <button class="admin-button button-create" id="createDefaultsBtn">
+                    CREATE DEFAULT SESSIONS
+                </button>
+                <button class="admin-button button-reset" id="resetProgressBtn">
+                    RESET SESSION PROGRESS
+                </button>
+                <button class="admin-button button-clear" id="clearAllBtn">
+                    CLEAR ALL SESSIONS
+                </button>
+                <button class="admin-button button-back" id="backBtn">
+                    BACK TO SESSION SELECT
+                </button>
+            </div>
+            
+            <!-- Status Messages -->
+            <div class="admin-status">
+                <p class="status-message" id="statusMessage"></p>
+            </div>
+            
+            <!-- Info Section -->
+            <div class="admin-info">
+                <h3 class="info-title">INFORMATION</h3>
+                <ul class="info-list">
+                    <li>5 sessions total (session-1 through session-5)</li>
+                    <li>Each session has 3 levels with different words</li>
+                    <li>Words must be exactly 5 letters (A-Z only)</li>
+                    <li>Levels unlock progressively (L1 → L2 → L3)</li>
+                    <li>Progress tracked per session/level</li>
+                    <li>Data stored in browser localStorage</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="admin.js"></script>
+</body>
+</html>

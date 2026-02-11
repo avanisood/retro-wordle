@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDLE - Session Select</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Session-specific styles */
+        .session-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .session-title {
+            font-size: 48px;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 40px;
+            letter-spacing: 4px;
+            text-align: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .session-input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 30px;
+        }
+
+        #sessionInput {
+            width: 100%;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            background-color: #000;
+            color: #00ff00;
+            border: 3px solid #00ff00;
+            text-align: center;
+            text-transform: lowercase;
+            letter-spacing: 2px;
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        #sessionInput:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        #sessionInput::placeholder {
+            color: #006600;
+        }
+
+        #submitSession {
+            padding: 20px 40px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #00ff00;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 3px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        #submitSession:hover {
+            background-color: #00ffff;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+            transform: scale(1.05);
+        }
+
+        #submitSession:active {
+            transform: scale(0.95);
+        }
+
+        .error-message {
+            width: 100%;
+            max-width: 500px;
+            min-height: 60px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #ff0000;
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            text-align: center;
+            margin-bottom: 30px;
+            display: none;
+            animation: shake 0.5s;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .available-sessions {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 40px;
+        }
+
+        .available-sessions h2 {
+            font-size: 24px;
+            color: #00ff00;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        #sessionList {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .session-card {
+            background-color: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .session-card:hover {
+            background-color: rgba(0, 255, 0, 0.2);
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transform: scale(1.05);
+        }
+
+        .session-card-id {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            color: #00ff00;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .session-card-name {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .session-card-progress {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #ffff00;
+        }
+
+        .session-card.completed {
+            border-color: #ffff00;
+        }
+
+        .session-card.completed .session-card-id {
+            color: #ffff00;
+        }
+
+        .admin-link {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .admin-link a {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #00ff00;
+            text-decoration: none;
+            border: 2px solid #00ff00;
+            padding: 15px 30px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        .admin-link a:hover {
+            background-color: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .no-sessions-message {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #ffff00;
+            text-align: center;
+            padding: 30px;
+            border: 2px dashed #ffff00;
+            background-color: rgba(255, 255, 0, 0.1);
+        }
+
+        .instructions {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            .session-title {
+                font-size: 32px;
+            }
+
+            #sessionInput {
+                font-size: 20px;
+                padding: 15px;
+            }
+
+            #submitSession {
+                font-size: 20px;
+                padding: 15px 30px;
+            }
+
+            #sessionList {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="game-screen">
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+    
+    <div class="session-container">
+        <h1 class="session-title">ENTER SESSION CODE</h1>
+        
+        <p class="instructions">
+            TYPE A SESSION CODE (session-1 to session-5)<br>
+            OR SELECT FROM AVAILABLE SESSIONS BELOW
+        </p>
+        
+        <div class="session-input-area">
+            <input 
+                type="text" 
+                id="sessionInput" 
+                placeholder="session-1" 
+                maxlength="20"
+                autocomplete="off"
+                autofocus
+            />
+            <button id="submitSession">START SESSION</button>
+        </div>
+        
+        <div class="error-message" id="errorMsg"></div>
+        
+        <div class="available-sessions">
+            <h2>AVAILABLE SESSIONS</h2>
+            <div id="sessionList">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="session-select.js"></script>
+</body>
+</html>

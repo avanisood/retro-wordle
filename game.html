@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDLE - Play</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="game-screen">
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+    
+    <div class="game-container">
+        <div class="game-header">
+            <div class="session-info">
+                <span class="session-id" id="sessionId">SESSION 1</span>
+                <span class="level-indicator" id="levelIndicator">LEVEL 1</span>
+            </div>
+            <h1 class="game-title">WORDLE</h1>
+            <div class="level-progress">
+                <div class="progress-dot completed" data-level="1" title="Level 1"></div>
+                <div class="progress-dot current" data-level="2" title="Level 2"></div>
+                <div class="progress-dot locked" data-level="3" title="Level 3"></div>
+            </div>
+        </div>
+        
+        <div class="game-board">
+            <!-- Row 1 -->
+            <div class="board-row" data-row="0">
+                <div class="tile" data-col="0"></div>
+                <div class="tile" data-col="1"></div>
+                <div class="tile" data-col="2"></div>
+                <div class="tile" data-col="3"></div>
+                <div class="tile" data-col="4"></div>
+            </div>
+            <!-- Row 2 -->
+            <div class="board-row" data-row="1">
+                <div class="tile" data-col="0"></div>
+                <div class="tile" data-col="1"></div>
+                <div class="tile" data-col="2"></div>
+                <div class="tile" data-col="3"></div>
+                <div class="tile" data-col="4"></div>
+            </div>
+            <!-- Row 3 -->
+            <div class="board-row" data-row="2">
+                <div class="tile" data-col="0"></div>
+                <div class="tile" data-col="1"></div>
+                <div class="tile" data-col="2"></div>
+                <div class="tile" data-col="3"></div>
+                <div class="tile" data-col="4"></div>
+            </div>
+            <!-- Row 4 -->
+            <div class="board-row" data-row="3">
+                <div class="tile" data-col="0"></div>
+                <div class="tile" data-col="1"></div>
+                <div class="tile" data-col="2"></div>
+                <div class="tile" data-col="3"></div>
+                <div class="tile" data-col="4"></div>
+            </div>
+            <!-- Row 5 -->
+            <div class="board-row" data-row="4">
+                <div class="tile" data-col="0"></div>
+                <div class="tile" data-col="1"></div>
+                <div class="tile" data-col="2"></div>
+                <div class="tile" data-col="3"></div>
+                <div class="tile" data-col="4"></div>
+            </div>
+            <!-- Row 6 -->
+            <div class="board-row" data-row="5">
+                <div class="tile" data-col="0"></div>
+                <div class="tile" data-col="1"></div>
+                <div class="tile" data-col="2"></div>
+                <div class="tile" data-col="3"></div>
+                <div class="tile" data-col="4"></div>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <div class="input-display">
+                <span class="input-label"></span>
+                <span class="input-cursor blink">_</span>
+            </div>
+        </div>
+        
+        <div class="message-area">
+            <p class="game-message"></p>
+        </div>
+    </div>
+    
+    <!-- Win/Loss Modal -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <h2 class="modal-title"></h2>
+            <p class="modal-text"></p>
+            <div class="modal-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="gamesPlayed">0</span>
+                    <span class="stat-label">PLAYED</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="winRate">0</span>
+                    <span class="stat-label">WIN %</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="currentStreak">0</span>
+                    <span class="stat-label">STREAK</span>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-button" id="nextLevelBtn">NEXT LEVEL <span class="key-hint">(N)</span></button>
+                <button class="modal-button" id="retryLevelBtn">RETRY LEVEL <span class="key-hint">(R)</span></button>
+                <button class="modal-button" id="backToLevelsBtn">LEVEL SELECT <span class="key-hint">(ESC)</span></button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Saving Indicator -->
+    <div class="saving-indicator" id="savingIndicator">
+        <span class="saving-text">SAVING...</span>
+    </div>
+    
+    <!-- Level Transition Screen -->
+    <div class="level-transition" id="levelTransition">
+        <div class="transition-content">
+            <h2 class="transition-title" id="transitionTitle">LEVEL COMPLETE!</h2>
+            <p class="transition-score" id="transitionScore">SCORE: 4/6</p>
+            <p class="transition-loading" id="transitionLoading">LOADING NEXT LEVEL...</p>
+            <div class="transition-progress">
+                <div class="transition-bar"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>

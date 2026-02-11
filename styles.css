@@ -1,0 +1,1292 @@
+/* ============================================
+   RETRO WORDLE 1985 - COMPLETE STYLESHEET
+   ============================================ */
+
+/* Import Pixel Font */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ============================================
+   COLOR PALETTE (CGA-INSPIRED)
+   ============================================ */
+:root {
+    --retro-blue: #0000AA;
+    --retro-cyan: #00AAAA;
+    --retro-magenta: #AA00AA;
+    --retro-yellow: #AAAA00;
+    --retro-green: #00AA00;
+    --retro-white: #AAAAAA;
+    --retro-black: #000000;
+    --retro-gray: #555555;
+    --retro-orange: #AA5500;
+    --retro-light-cyan: #55FFFF;
+    --retro-light-magenta: #FF55FF;
+    --retro-light-white: #FFFFFF;
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', monospace;
+    background-color: var(--retro-blue);
+    color: var(--retro-white);
+    overflow: hidden;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* ============================================
+   CRT EFFECTS
+   ============================================ */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.15),
+            rgba(0, 0, 0, 0.15) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+}
+
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    animation: scanline 8s linear infinite;
+}
+
+@keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+/* ============================================
+   BLINK ANIMATION
+   ============================================ */
+@keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+.blink {
+    animation: blink 1s step-start infinite;
+}
+
+/* ============================================
+   TITLE SCREEN
+   ============================================ */
+.title-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    cursor: pointer;
+}
+
+.title-container {
+    text-align: center;
+    padding: 20px;
+    max-width: 800px;
+}
+
+.title-logo {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.title-tile {
+    width: 100px;
+    height: 120px;
+    border: 4px solid var(--retro-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: var(--retro-light-white);
+    position: relative;
+    overflow: hidden;
+}
+
+.tile-green {
+    background-color: var(--retro-green);
+}
+
+.tile-brown {
+    background-color: var(--retro-orange);
+}
+
+.tile-gray {
+    background-color: var(--retro-gray);
+}
+
+/* Vertical stripes for first tile */
+.tile-stripes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 15px,
+        rgba(170, 255, 170, 0.3) 15px,
+        rgba(170, 255, 170, 0.3) 30px
+    );
+}
+
+.credit-box {
+    background-color: var(--retro-orange);
+    border: 3px solid var(--retro-white);
+    padding: 15px 30px;
+    margin: 30px auto;
+    max-width: 600px;
+}
+
+.credit-text {
+    font-size: 14px;
+    color: var(--retro-light-white);
+    margin-bottom: 10px;
+}
+
+.credit-subtext {
+    font-size: 10px;
+    color: var(--retro-white);
+}
+
+.instructions-box {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 3px solid var(--retro-white);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 700px;
+    text-align: left;
+}
+
+.instructions-title {
+    font-size: 16px;
+    color: var(--retro-light-white);
+    margin-bottom: 15px;
+}
+
+.instructions-text {
+    font-size: 8px;
+    line-height: 1.6;
+    color: var(--retro-white);
+}
+
+.click-prompt {
+    font-size: 12px;
+    color: var(--retro-light-cyan);
+    margin-top: 40px;
+}
+
+/* ============================================
+   CHARACTER SCREEN
+   ============================================ */
+.character-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    animation: backgroundCycle 4s ease-in-out infinite;
+}
+
+@keyframes backgroundCycle {
+    0% { background-color: var(--retro-blue); }
+    33% { background-color: #000055; }
+    66% { background-color: #550055; }
+    100% { background-color: var(--retro-blue); }
+}
+
+.character-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    height: 600px;
+}
+
+/* Wizard Character */
+.wizard-character {
+    position: absolute;
+    left: 20%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    height: 400px;
+}
+
+.wizard-hat {
+    position: relative;
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-bottom: 180px solid var(--retro-cyan);
+    margin: 0 auto;
+}
+
+.hat-star {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: var(--retro-light-white);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.wizard-head {
+    width: 120px;
+    height: 80px;
+    background-color: var(--retro-white);
+    margin: 0 auto;
+    position: relative;
+}
+
+.wizard-face {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background-color: var(--retro-magenta);
+}
+
+.wizard-eyes {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 20px;
+}
+
+.eye {
+    width: 12px;
+    height: 12px;
+    background-color: var(--retro-black);
+}
+
+.wizard-mouth {
+    width: 40px;
+    height: 15px;
+    background-color: var(--retro-black);
+    margin: 5px auto 0;
+}
+
+.wizard-body {
+    position: relative;
+    margin-top: 10px;
+}
+
+.wizard-arm {
+    width: 60px;
+    height: 100px;
+    background-color: var(--retro-cyan);
+    position: absolute;
+}
+
+.arm-left {
+    left: 0;
+    top: 0;
+    animation: armWaveLeft 2s ease-in-out infinite;
+}
+
+.arm-right {
+    right: 0;
+    top: 0;
+    animation: armWaveRight 2s ease-in-out infinite;
+}
+
+@keyframes armWaveLeft {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-20deg); }
+}
+
+@keyframes armWaveRight {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(20deg); }
+}
+
+/* Magic Wand */
+.magic-wand {
+    position: absolute;
+    right: -30px;
+    top: 80px;
+    animation: wandFloat 2s ease-in-out infinite;
+}
+
+@keyframes wandFloat {
+    0%, 100% { transform: translateY(0px) rotate(45deg); }
+    50% { transform: translateY(-20px) rotate(45deg); }
+}
+
+.wand-stick {
+    width: 60px;
+    height: 8px;
+    background-color: var(--retro-yellow);
+}
+
+.wand-star {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background-color: var(--retro-light-white);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* Sparkles */
+.sparkles {
+    position: absolute;
+    right: -20px;
+    top: -10px;
+}
+
+.sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: var(--retro-light-white);
+    opacity: 0;
+    animation: sparkleAnimation 1.5s ease-in-out infinite;
+}
+
+.sparkle-1 { animation-delay: 0s; left: 0px; top: 0px; }
+.sparkle-2 { animation-delay: 0.3s; left: 20px; top: -10px; }
+.sparkle-3 { animation-delay: 0.6s; left: 30px; top: 10px; }
+.sparkle-4 { animation-delay: 0.9s; left: 10px; top: 20px; }
+.sparkle-5 { animation-delay: 1.2s; left: -10px; top: 15px; }
+
+@keyframes sparkleAnimation {
+    0% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1.5); }
+    100% { opacity: 0; transform: scale(0); }
+}
+
+/* Speech Bubble */
+.speech-bubble {
+    position: absolute;
+    right: 10%;
+    top: 15%;
+    width: 400px;
+    background-color: var(--retro-white);
+    border: 4px solid var(--retro-black);
+    padding: 20px;
+}
+
+.speech-bubble::before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 40px;
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 30px solid var(--retro-black);
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 44px;
+    width: 0;
+    height: 0;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    border-right: 26px solid var(--retro-white);
+}
+
+.speech-text {
+    font-size: 11px;
+    color: var(--retro-black);
+    line-height: 1.8;
+}
+
+/* ============================================
+   GAME SCREEN
+   ============================================ */
+.game-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 500px;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.session-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: var(--retro-cyan);
+    text-shadow: 2px 2px 0 var(--retro-black);
+}
+
+.session-id,
+.level-indicator {
+    padding: 5px 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--retro-cyan);
+    border-radius: 4px;
+}
+
+.game-title {
+    font-size: 32px;
+    color: var(--retro-light-white);
+    text-shadow: 3px 3px 0 var(--retro-black);
+}
+
+.level-progress {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.progress-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--retro-light-white);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.progress-dot.completed {
+    background: var(--retro-green);
+    border-color: var(--retro-green);
+}
+
+.progress-dot.completed::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--retro-black);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.progress-dot.current {
+    background: var(--retro-cyan);
+    border-color: var(--retro-cyan);
+    animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.progress-dot.locked {
+    background: rgba(100, 100, 100, 0.3);
+    border-color: var(--retro-gray);
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.7;
+    }
+}
+
+.game-board {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.board-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tile {
+    width: 70px;
+    height: 70px;
+    border: 3px solid var(--retro-white);
+    background-color: var(--retro-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--retro-light-white);
+    transition: transform 0.1s;
+}
+
+.tile.filled {
+    background-color: var(--retro-gray);
+}
+
+.tile.correct {
+    background-color: var(--retro-green);
+    border-color: var(--retro-light-white);
+}
+
+.tile.present {
+    background-color: var(--retro-yellow);
+    border-color: var(--retro-light-white);
+}
+
+.tile.absent {
+    background-color: var(--retro-black);
+    border-color: var(--retro-gray);
+}
+
+/* Tile Flip Animation */
+@keyframes tileFlip {
+    0% { transform: rotateX(0deg); }
+    50% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+.tile.flip {
+    animation: tileFlip 0.5s ease-in-out;
+}
+
+/* Shake Animation for Invalid Words */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.board-row.shake {
+    animation: shake 0.4s;
+}
+
+/* Input Area */
+.input-area {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-display {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 3px solid var(--retro-white);
+    padding: 15px 20px;
+    font-size: 24px;
+    color: var(--retro-light-white);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-label {
+    letter-spacing: 8px;
+    margin-right: 5px;
+}
+
+.input-cursor {
+    margin-left: 5px;
+}
+
+.message-area {
+    text-align: center;
+    min-height: 40px;
+}
+
+.game-message {
+    font-size: 12px;
+    color: var(--retro-light-cyan);
+}
+
+/* ============================================
+   MODAL (WIN/LOSS)
+   ============================================ */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--retro-blue);
+    border: 5px solid var(--retro-white);
+    padding: 40px;
+    max-width: 500px;
+    text-align: center;
+}
+
+.modal-title {
+    font-size: 24px;
+    color: var(--retro-light-white);
+    margin-bottom: 20px;
+}
+
+.modal-text {
+    font-size: 12px;
+    color: var(--retro-white);
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+.modal-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-value {
+    font-size: 32px;
+    color: var(--retro-light-cyan);
+}
+
+.stat-label {
+    font-size: 8px;
+    color: var(--retro-white);
+}
+
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-button {
+    font-family: 'Press Start 2P', monospace;
+    background-color: var(--retro-green);
+    color: var(--retro-light-white);
+    border: 3px solid var(--retro-white);
+    padding: 15px 30px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.1s;
+    width: 100%;
+}
+
+.modal-button:hover {
+    background-color: var(--retro-light-cyan);
+    color: var(--retro-black);
+    transform: scale(1.05);
+}
+
+.modal-button:active {
+    transform: scale(0.95);
+}
+
+.modal-button#nextLevelBtn {
+    background-color: var(--retro-cyan);
+}
+
+.modal-button#retryLevelBtn {
+    background-color: var(--retro-yellow);
+    color: var(--retro-black);
+}
+
+.modal-button#backToLevelsBtn {
+    background-color: var(--retro-magenta);
+}
+
+.modal-button.hidden {
+    display: none;
+}
+
+/* Key hint in buttons */
+.key-hint {
+    font-size: 8px;
+    opacity: 0.7;
+    margin-left: 5px;
+}
+
+/* ============================================
+   SAVING INDICATOR
+   ============================================ */
+.saving-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 255, 255, 0.9);
+    color: #000;
+    padding: 10px 20px;
+    border: 2px solid var(--retro-cyan);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    z-index: 2000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.saving-indicator.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.saving-text {
+    display: inline-block;
+    animation: blink 1s infinite;
+}
+
+/* ============================================
+   LEVEL TRANSITION SCREEN
+   ============================================ */
+.level-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    animation: fadeIn 0.3s ease;
+}
+
+.level-transition.show {
+    display: flex;
+}
+
+.transition-content {
+    text-align: center;
+    padding: 40px;
+    border: 4px solid var(--retro-cyan);
+    background-color: #000;
+    max-width: 500px;
+}
+
+.transition-title {
+    font-size: 24px;
+    color: var(--retro-light-white);
+    margin-bottom: 20px;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+.transition-score {
+    font-size: 18px;
+    color: var(--retro-green);
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+.transition-loading {
+    font-size: 12px;
+    color: var(--retro-cyan);
+    margin-bottom: 20px;
+    animation: blink 1.5s infinite;
+}
+
+.transition-progress {
+    width: 100%;
+    height: 20px;
+    border: 2px solid var(--retro-white);
+    background-color: #000;
+    overflow: hidden;
+}
+
+.transition-bar {
+    height: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--retro-cyan) 0px,
+        var(--retro-cyan) 10px,
+        var(--retro-light-cyan) 10px,
+        var(--retro-light-cyan) 20px
+    );
+    animation: loadingBar 2s ease-in-out;
+}
+
+@keyframes loadingBar {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* ============================================
+   CONFETTI EFFECT (Retro Style)
+   ============================================ */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2500;
+    overflow: hidden;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -20px;
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ============================================
+   ADMIN SCREEN
+   ============================================ */
+.admin-screen {
+    min-height: 100vh;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.admin-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    border-bottom: 3px solid var(--retro-white);
+}
+
+.admin-title {
+    font-size: 24px;
+    color: var(--retro-light-white);
+    margin-bottom: 10px;
+}
+
+.admin-subtitle {
+    font-size: 10px;
+    color: var(--retro-cyan);
+}
+
+.admin-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.admin-section {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 3px solid var(--retro-white);
+    padding: 20px;
+}
+
+.section-title {
+    font-size: 14px;
+    color: var(--retro-light-cyan);
+    margin-bottom: 15px;
+}
+
+.section-help {
+    font-size: 8px;
+    color: var(--retro-white);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.word-textarea {
+    width: 100%;
+    min-height: 300px;
+    background-color: var(--retro-black);
+    color: var(--retro-light-white);
+    border: 3px solid var(--retro-gray);
+    padding: 15px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    line-height: 2;
+    resize: vertical;
+}
+
+.word-textarea:focus {
+    outline: none;
+    border-color: var(--retro-cyan);
+}
+
+.word-count {
+    margin-top: 10px;
+    font-size: 10px;
+    color: var(--retro-cyan);
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.setting-label {
+    font-size: 10px;
+    color: var(--retro-white);
+    min-width: 150px;
+}
+
+.setting-input {
+    background-color: var(--retro-black);
+    color: var(--retro-light-white);
+    border: 3px solid var(--retro-gray);
+    padding: 10px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+}
+
+.setting-input:focus {
+    outline: none;
+    border-color: var(--retro-cyan);
+}
+
+.current-word {
+    font-size: 14px;
+    color: var(--retro-light-cyan);
+    letter-spacing: 4px;
+}
+
+.admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.admin-button {
+    font-family: 'Press Start 2P', monospace;
+    padding: 15px 25px;
+    font-size: 10px;
+    border: 3px solid var(--retro-white);
+    cursor: pointer;
+    transition: all 0.1s;
+    color: var(--retro-light-white);
+}
+
+.button-save {
+    background-color: var(--retro-green);
+}
+
+.button-load {
+    background-color: var(--retro-cyan);
+}
+
+.button-clear {
+    background-color: var(--retro-orange);
+}
+
+.button-back {
+    background-color: var(--retro-gray);
+}
+
+.admin-button:hover {
+    transform: scale(1.05);
+    border-color: var(--retro-light-white);
+}
+
+.admin-button:active {
+    transform: scale(0.95);
+}
+
+.admin-status {
+    text-align: center;
+    min-height: 40px;
+}
+
+.status-message {
+    font-size: 10px;
+    color: var(--retro-light-cyan);
+}
+
+.status-message.error {
+    color: var(--retro-orange);
+}
+
+.status-message.success {
+    color: var(--retro-green);
+}
+
+.admin-info {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 3px solid var(--retro-gray);
+    padding: 20px;
+}
+
+.info-title {
+    font-size: 12px;
+    color: var(--retro-white);
+    margin-bottom: 15px;
+}
+
+.info-list {
+    list-style: none;
+    font-size: 8px;
+    color: var(--retro-white);
+    line-height: 2;
+}
+
+.info-list li::before {
+    content: '> ';
+    color: var(--retro-cyan);
+}
+
+/* Session Management Styles */
+.session-select {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--retro-light-cyan);
+    border: 3px solid var(--retro-cyan);
+    padding: 10px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.session-select:focus {
+    outline: none;
+    border-color: var(--retro-light-cyan);
+}
+
+.levels-config {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--retro-gray);
+}
+
+.levels-title {
+    font-size: 10px;
+    color: var(--retro-white);
+    margin-bottom: 15px;
+}
+
+.level-input-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.level-label {
+    font-size: 10px;
+    color: var(--retro-cyan);
+    min-width: 80px;
+}
+
+.level-word-input {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--retro-light-white);
+    border: 3px solid var(--retro-cyan);
+    padding: 10px;
+    width: 150px;
+    text-transform: uppercase;
+}
+
+.level-word-input:focus {
+    outline: none;
+    border-color: var(--retro-light-cyan);
+}
+
+.level-word-input.invalid {
+    border-color: var(--retro-orange);
+}
+
+.session-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.session-card {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 3px solid var(--retro-cyan);
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.session-card:hover {
+    border-color: var(--retro-light-cyan);
+    transform: scale(1.02);
+}
+
+.session-card.selected {
+    border-color: var(--retro-green);
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.session-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.session-card-id {
+    font-size: 10px;
+    color: var(--retro-light-cyan);
+}
+
+.session-card-progress {
+    font-size: 8px;
+    color: var(--retro-green);
+}
+
+.session-card-name {
+    font-size: 9px;
+    color: var(--retro-white);
+    margin-bottom: 8px;
+}
+
+.session-card-levels {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.level-status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--retro-gray);
+}
+
+.level-status-dot.completed {
+    background-color: var(--retro-green);
+    border-color: var(--retro-green);
+}
+
+.level-status-dot.incomplete {
+    background-color: transparent;
+    border-color: var(--retro-gray);
+}
+
+.button-create {
+    background-color: var(--retro-magenta);
+}
+
+.button-reset {
+    background-color: var(--retro-yellow);
+    color: var(--retro-black);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .title-tile {
+        width: 50px;
+        height: 60px;
+        font-size: 24px;
+    }
+    
+    .tile {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+    
+    .wizard-character {
+        transform: scale(0.7) translateY(-50%);
+    }
+    
+    .speech-bubble {
+        width: 250px;
+        right: 5%;
+    }
+    
+    .speech-text {
+        font-size: 8px;
+    }
+    
+    .admin-container {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-tile {
+        width: 40px;
+        height: 50px;
+        font-size: 18px;
+        border: 2px solid var(--retro-white);
+    }
+    
+    .tile {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+        border: 2px solid var(--retro-white);
+    }
+    
+    .game-title {
+        font-size: 24px;
+    }
+    
+    .instructions-text {
+        font-size: 6px;
+    }
+}

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORDLE - Level Select</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Level selection specific styles */
+        .level-select-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .session-name {
+            font-size: 48px;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+
+        .session-subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            color: #00ffff;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .level-card {
+            background-color: rgba(0, 255, 0, 0.05);
+            border: 3px solid #666;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: not-allowed;
+        }
+
+        .level-card.unlocked {
+            border-color: #00ff00;
+            cursor: pointer;
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+
+        .level-card.unlocked:hover {
+            background-color: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+        .level-card.completed {
+            border-color: #ffff00;
+            background-color: rgba(255, 255, 0, 0.1);
+        }
+
+        .level-card.completed:hover {
+            background-color: rgba(255, 255, 0, 0.15);
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.5);
+        }
+
+        .level-card.current {
+            animation: pulse-border 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% {
+                border-color: #00ff00;
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            }
+            50% {
+                border-color: #00ffff;
+                box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
+            }
+        }
+
+        .level-card.locked {
+            opacity: 0.5;
+            filter: grayscale(50%);
+        }
+
+        .level-number {
+            font-family: 'Courier New', monospace;
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .level-card.locked .level-number {
+            color: #666;
+        }
+
+        .level-card.completed .level-number {
+            color: #ffff00;
+        }
+
+        .level-status {
+            font-family: 'Courier New', monospace;
+            font-size: 48px;
+            margin: 20px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .level-status.play-icon {
+            color: #00ff00;
+            font-size: 64px;
+        }
+
+        .level-status.check-icon {
+            color: #ffff00;
+            font-size: 64px;
+        }
+
+        .level-status.lock-icon {
+            color: #666;
+            font-size: 48px;
+        }
+
+        .level-score {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #00ffff;
+            text-align: center;
+            min-height: 30px;
+        }
+
+        .level-card.locked .level-score {
+            color: #666;
+        }
+
+        .level-attempts {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .progress-display {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            color: #00ff00;
+            margin-bottom: 30px;
+            padding: 15px 30px;
+            border: 2px solid #00ff00;
+            background-color: rgba(0, 255, 0, 0.1);
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .back-button {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px 40px;
+            background-color: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+        .back-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Message overlay for locked levels */
+        .message-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 3px solid #ff0000;
+            padding: 30px 50px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            color: #ff0000;
+            z-index: 1000;
+            display: none;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+            animation: shake 0.5s;
+        }
+
+        .message-overlay.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(-50%, -50%); }
+            25% { transform: translate(-52%, -50%); }
+            75% { transform: translate(-48%, -50%); }
+        }
+
+        /* Session complete banner */
+        .session-complete-banner {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 4px solid #ffff00;
+            padding: 40px 60px;
+            font-family: 'Courier New', monospace;
+            font-size: 48px;
+            color: #ffff00;
+            z-index: 1000;
+            display: none;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 255, 0, 0.8);
+            animation: celebrate 1s ease-in-out;
+        }
+
+        .session-complete-banner.show {
+            display: block;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* Level unlock shine effect */
+        .level-card.unlocking {
+            animation: unlockShine 1s ease-in-out;
+        }
+
+        @keyframes unlockShine {
+            0% {
+                box-shadow: 0 0 10px rgba(0, 255, 0, 0);
+                border-color: #666;
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0, 255, 0, 1);
+                border-color: #00ff00;
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+                border-color: #00ff00;
+            }
+        }
+
+        /* Level preview tooltip */
+        .level-preview {
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 2px solid #00ffff;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #00ffff;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+
+        .level-card:hover .level-preview {
+            opacity: 1;
+        }
+
+        .level-card.locked:hover .level-preview {
+            display: none;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 900px) {
+            .levels-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .session-name {
+                font-size: 36px;
+            }
+
+            .session-subtitle {
+                font-size: 20px;
+            }
+
+            .level-card {
+                min-height: 200px;
+            }
+
+            .level-number {
+                font-size: 28px;
+            }
+
+            .progress-display {
+                font-size: 20px;
+            }
+
+            .back-button {
+                font-size: 18px;
+                padding: 12px 30px;
+            }
+
+            .message-overlay {
+                font-size: 20px;
+                padding: 20px 30px;
+                max-width: 80%;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            color: #00ffff;
+            text-align: center;
+            padding: 50px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body class="game-screen">
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+    
+    <div class="level-select-container">
+        <h1 class="session-name" id="sessionName">SESSION 1</h1>
+        <p class="session-subtitle">SELECT LEVEL</p>
+        
+        <div class="levels-grid" id="levelsGrid">
+            <div class="level-card locked" data-level="1">
+                <div class="level-number">LEVEL 1</div>
+                <div class="level-status lock-icon">🔒</div>
+                <div class="level-score"></div>
+            </div>
+            
+            <div class="level-card locked" data-level="2">
+                <div class="level-number">LEVEL 2</div>
+                <div class="level-status lock-icon">🔒</div>
+                <div class="level-score"></div>
+            </div>
+            
+            <div class="level-card locked" data-level="3">
+                <div class="level-number">LEVEL 3</div>
+                <div class="level-status lock-icon">🔒</div>
+                <div class="level-score"></div>
+            </div>
+        </div>
+        
+        <div class="progress-display">
+            <span id="progressText">0/3 LEVELS COMPLETED</span>
+        </div>
+        
+        <button class="back-button" id="backBtn">BACK TO SESSION SELECT</button>
+    </div>
+    
+    <!-- Message overlay for locked levels -->
+    <div class="message-overlay" id="messageOverlay"></div>
+    
+    <!-- Session complete banner -->
+    <div class="session-complete-banner" id="completeBanner">
+        🎉 SESSION COMPLETE! 🎉<br>
+        <span style="font-size: 24px; color: #00ff00;">ALL 3 LEVELS CLEARED!</span>
+    </div>
+    
+    <script src="level-select.js"></script>
+</body>
+</html>
