@@ -346,23 +346,52 @@ function showSessionCompleteBanner() {
 function initLevelSelect() {
     console.log('Initializing level selection screen...');
     
+    // Check if any sessions exist at all
+    let sessionsExist = false;
+    try {
+        const sessionData = localStorage.getItem('sessionData');
+        if (sessionData) {
+            const parsed = JSON.parse(sessionData);
+            sessionsExist = parsed && Object.keys(parsed).length > 0;
+        }
+    } catch (e) {
+        console.error('Error checking session data:', e);
+    }
+    
+    // If no sessions exist, create the default sample session
+    if (!sessionsExist) {
+        console.log('No sessions found - creating default sample session...');
+        const defaultSession = {
+            "session-1": {
+                "sessionId": "session-1",
+                "sessionName": "Sample Session",
+                "levels": [
+                    { levelNumber: 1, word: "CRANE", completed: false, attempts: 0, bestScore: null },
+                    { levelNumber: 2, word: "SLATE", completed: false, attempts: 0, bestScore: null },
+                    { levelNumber: 3, word: "AUDIO", completed: false, attempts: 0, bestScore: null }
+                ]
+            }
+        };
+        
+        try {
+            localStorage.setItem('sessionData', JSON.stringify(defaultSession));
+            console.log('Default sample session created successfully');
+        } catch (e) {
+            console.error('Error creating default session:', e);
+            showMessage('ERROR CREATING SESSION!');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+            return;
+        }
+    }
+    
     // Load current session
     let currentSession = loadCurrentSession();
     
     // If no current session, auto-select session-1 for normal users
     if (!currentSession) {
         console.log('No current session found, auto-selecting session-1...');
-        
-        // Ensure default session exists
-        const allSessions = loadSessionData('session-1');
-        if (!allSessions) {
-            console.error('No sessions available - redirecting to index');
-            showMessage('NO SESSIONS AVAILABLE!');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
-            return;
-        }
         
         // Create currentSession with session-1
         currentSession = {
