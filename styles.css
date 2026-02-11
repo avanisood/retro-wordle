@@ -750,6 +750,130 @@ body {
 }
 
 /* ============================================
+   SESSION COMPLETE MODAL (WITH WIZARD!)
+   ============================================ */
+.session-complete-modal .modal-content {
+    max-width: 600px;
+    background: linear-gradient(180deg, #0000AA 0%, #000055 100%);
+    border: 5px solid var(--retro-light-cyan);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+.wizard-celebration {
+    position: relative;
+    margin: 0 auto 20px;
+    width: 120px;
+    height: 120px;
+    animation: wizardFloat 2s ease-in-out infinite;
+}
+
+@keyframes wizardFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.wizard-large {
+    font-size: 80px;
+    text-align: center;
+    animation: wizardSpin 3s linear infinite;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
+}
+
+@keyframes wizardSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.magic-sparkles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    animation: sparklesPulse 1.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes sparklesPulse {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% { 
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+}
+
+.session-complete-title {
+    font-size: 28px;
+    color: var(--retro-light-cyan);
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 0 var(--retro-magenta);
+    animation: titlePulse 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.wizard-message {
+    font-size: 11px;
+    color: var(--retro-light-magenta);
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.session-complete-text {
+    font-size: 12px;
+    color: var(--retro-white);
+    margin-bottom: 25px;
+    line-height: 1.8;
+}
+
+.session-complete-text #completedSessionName {
+    color: var(--retro-light-cyan);
+    font-weight: bold;
+}
+
+.session-complete-modal .stat-value {
+    color: var(--retro-light-magenta);
+    font-size: 36px;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.session-complete-modal .modal-button {
+    font-size: 11px;
+}
+
+.primary-button {
+    background-color: var(--retro-magenta) !important;
+    color: var(--retro-light-white);
+    animation: buttonGlow 2s ease-in-out infinite;
+}
+
+@keyframes buttonGlow {
+    0%, 100% { 
+        box-shadow: 0 0 10px rgba(255, 85, 255, 0.5);
+    }
+    50% { 
+        box-shadow: 0 0 20px rgba(255, 85, 255, 1);
+    }
+}
+
+.primary-button:hover {
+    background-color: var(--retro-light-magenta) !important;
+    transform: scale(1.08);
+}
+
+.session-complete-modal .modal-button#replaySessionBtn {
+    background-color: var(--retro-cyan);
+}
+
+
+/* ============================================
    SAVING INDICATOR
    ============================================ */
 .saving-indicator {

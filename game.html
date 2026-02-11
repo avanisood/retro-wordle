@@ -114,6 +114,37 @@
         </div>
     </div>
     
+    <!-- Session Complete Modal (with Wizard!) -->
+    <div class="modal session-complete-modal" id="sessionCompleteModal">
+        <div class="modal-content session-complete-content">
+            <div class="wizard-celebration">
+                <div class="wizard-large">🧙</div>
+                <div class="magic-sparkles">✨</div>
+            </div>
+            <h2 class="session-complete-title">SESSION COMPLETE!</h2>
+            <p class="wizard-message">The wizard is impressed! You've mastered all the words in this mystical session!</p>
+            <p class="session-complete-text">Congratulations! You've completed all 3 levels in <span id="completedSessionName">SESSION 1</span>!</p>
+            <div class="modal-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="sessionPlayed">3</span>
+                    <span class="stat-label">PLAYED</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="sessionWinRate">100</span>
+                    <span class="stat-label">WIN %</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="sessionStreak">3</span>
+                    <span class="stat-label">STREAK</span>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-button primary-button" id="backToSessionsBtn">BACK TO SESSIONS <span class="key-hint">(ENTER)</span></button>
+                <button class="modal-button" id="replaySessionBtn">REPLAY SESSION <span class="key-hint">(R)</span></button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Saving Indicator -->
     <div class="saving-indicator" id="savingIndicator">
         <span class="saving-text">SAVING...</span>

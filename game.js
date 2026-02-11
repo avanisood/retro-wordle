@@ -869,10 +869,18 @@ function submitGuess() {
             
             saveGame();
             
-            // Show win modal after short delay
-            setTimeout(() => {
-                showModal(true);
-            }, 500);
+            // Check if this was the last level (level 3) and if all levels are now complete
+            if (gameState.currentLevel === 3 && checkSessionComplete()) {
+                // Show special session complete modal with wizard!
+                setTimeout(() => {
+                    showSessionCompleteModal();
+                }, 500);
+            } else {
+                // Show regular win modal
+                setTimeout(() => {
+                    showModal(true);
+                }, 500);
+            }
             return;
         }
         
@@ -1364,41 +1372,121 @@ function backToLevels() {
     window.location.href = 'level-select.html';
 }
 
-// Show session complete modal
+// Show session complete modal with wizard celebration!
 function showSessionCompleteModal() {
-    const modal = document.getElementById('gameModal');
-    const modalTitle = document.querySelector('.modal-title');
-    const modalMessage = document.querySelector('.modal-text');
+    console.log('Session complete! Showing wizard celebration...');
     
-    if (!modal || !modalTitle || !modalMessage) return;
+    const modal = document.getElementById('sessionCompleteModal');
+    if (!modal) {
+        console.error('Session complete modal not found!');
+        return;
+    }
     
-    modalTitle.textContent = '🎉 SESSION COMPLETE! 🎉';
-    modalMessage.textContent = `Congratulations! You've completed all 3 levels in ${gameState.sessionId.toUpperCase().replace('-', ' ')}!`;
+    // Get session info
+    const sessionData = loadSessionData(gameState.sessionId);
+    const sessionName = sessionData ? sessionData.sessionName : gameState.sessionId.toUpperCase().replace('-', ' ');
     
-    // Hide next level button, show only back button
-    const nextLevelBtn = document.getElementById('nextLevelBtn');
-    const retryLevelBtn = document.getElementById('retryLevelBtn');
-    const backToLevelsBtn = document.getElementById('backToLevelsBtn');
+    // Update session name in modal
+    const sessionNameEl = document.getElementById('completedSessionName');
+    if (sessionNameEl) {
+        sessionNameEl.textContent = sessionName;
+    }
     
-    if (nextLevelBtn) nextLevelBtn.style.display = 'none';
-    if (retryLevelBtn) retryLevelBtn.style.display = 'none';
-    if (backToLevelsBtn) {
-        backToLevelsBtn.style.display = 'block';
-        backToLevelsBtn.textContent = 'BACK TO SESSIONS';
-        backToLevelsBtn.onclick = () => {
-            window.location.href = 'session-select.html';
+    // Calculate stats for this session
+    if (sessionData && sessionData.levels) {
+        const levels = sessionData.levels;
+        const played = levels.length;
+        const completed = levels.filter(l => l.completed).length;
+        const winRate = Math.round((completed / played) * 100);
+        
+        document.getElementById('sessionPlayed').textContent = played;
+        document.getElementById('sessionWinRate').textContent = winRate;
+        document.getElementById('sessionStreak').textContent = completed;
+    }
+    
+    // Setup button handlers
+    const backToSessionsBtn = document.getElementById('backToSessionsBtn');
+    const replaySessionBtn = document.getElementById('replaySessionBtn');
+    
+    if (backToSessionsBtn) {
+        backToSessionsBtn.onclick = () => {
+            window.location.href = 'level-select.html';
         };
     }
     
-    // Play celebration sound
-    playCelebrationSound();
+    if (replaySessionBtn) {
+        replaySessionBtn.onclick = () => {
+            // Reset all levels in this session
+            if (confirm('Reset all levels in this session and play again?')) {
+                resetSessionProgress();
+                window.location.href = 'level-select.html';
+            }
+        };
+    }
     
-    // Create confetti effect
-    createConfetti();
+    // Show the modal
+    modal.classList.add('show');
     
-    modal.style.display = 'flex';
+    // Play celebration sound (optional)
+    playWinSound();
+    
+    // Keyboard shortcuts for session complete modal
+    const handleSessionCompleteKeys = (e) => {
+        if (e.key === 'Enter') {
+            backToSessionsBtn.click();
+        } else if (e.key.toLowerCase() === 'r') {
+            replaySessionBtn.click();
+        }
+    };
+    
+    document.addEventListener('keydown', handleSessionCompleteKeys);
+    
+    // Remove listener when modal closes
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            document.removeEventListener('keydown', handleSessionCompleteKeys);
+        }
+    });
 }
 
+// Reset progress for current session (for replay)
+function resetSessionProgress() {
+    try {
+        const sessionDataStr = localStorage.getItem('sessionData');
+        if (!sessionDataStr) return;
+        
+        const allSessions = JSON.parse(sessionDataStr);
+        const session = allSessions[gameState.sessionId];
+        
+        if (!session) return;
+        
+        // Reset all levels
+        session.levels.forEach(level => {
+            level.completed = false;
+            level.attempts = 0;
+            level.bestScore = null;
+        });
+        
+        // Save updated data
+        localStorage.setItem('sessionData', JSON.stringify(allSessions));
+        
+        // Reset currentSession to level 1
+        const currentSession = {
+            sessionId: gameState.sessionId,
+            currentLevel: 1,
+            levelProgress: {
+                guesses: [],
+                currentRow: 0,
+                gameStatus: 'playing'
+            }
+        };
+        localStorage.setItem('currentSession', JSON.stringify(currentSession));
+        
+        console.log('Session progress reset');
+    } catch (e) {
+        console.error('Error resetting session:', e);
+    }
+}
 
 // Add celebration sound for session complete
 function playCelebrationSound() {
