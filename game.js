@@ -450,6 +450,60 @@ function initGame() {
     
     // Set up keyboard listener
     setupKeyboardListener();
+    
+    // Initialize mobile keyboard
+    initMobileKeyboard();
+}
+
+// Initialize mobile on-screen keyboard
+function initMobileKeyboard() {
+    const keyboard = document.getElementById('mobileKeyboard');
+    if (!keyboard) return;
+    
+    const keys = keyboard.querySelectorAll('.key-btn');
+    
+    keys.forEach(key => {
+        key.addEventListener('click', (e) => {
+            e.preventDefault();
+            const keyValue = key.getAttribute('data-key');
+            
+            if (keyValue === 'ENTER') {
+                submitGuess();
+            } else if (keyValue === 'BACK') {
+                handleBackspace();
+            } else {
+                handleKeyPress(keyValue);
+            }
+            
+            // Add visual feedback
+            key.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                key.style.transform = 'scale(1)';
+            }, 100);
+        });
+    });
+    
+    console.log('📱 Mobile keyboard initialized');
+}
+
+// Update keyboard colors based on guesses
+function updateKeyboardColors(letter, status) {
+    const keyboard = document.getElementById('mobileKeyboard');
+    if (!keyboard) return;
+    
+    const key = keyboard.querySelector(`[data-key="${letter}"]`);
+    if (!key) return;
+    
+    // Only update if new status is better
+    if (status === 'correct') {
+        key.classList.remove('present', 'absent');
+        key.classList.add('correct');
+    } else if (status === 'present' && !key.classList.contains('correct')) {
+        key.classList.remove('absent');
+        key.classList.add('present');
+    } else if (status === 'absent' && !key.classList.contains('correct') && !key.classList.contains('present')) {
+        key.classList.add('absent');
+    }
 }
 
 // Update level display (session ID and level indicator)
@@ -975,6 +1029,10 @@ function animateTileFlip(row, results, callback) {
             setTimeout(() => {
                 const colorClass = results[index]; // 'correct', 'present', or 'absent'
                 tile.classList.add(colorClass);
+                
+                // Update mobile keyboard colors
+                const letter = tile.textContent.toUpperCase();
+                updateKeyboardColors(letter, colorClass);
                 
                 // Play reveal sound
                 playRevealBeep(results[index]);

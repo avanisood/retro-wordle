@@ -1358,21 +1358,55 @@ body {
 }
 
 /* ============================================
-   RESPONSIVE DESIGN
+   MOBILE RESPONSIVE STYLES - PHASE 2
    ============================================ */
-@media (max-width: 768px) {
+
+/* Tablets and Small Desktops (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .crt-overlay::before {
+        background-size: 100% 3px;
+    }
+}
+
+/* Mobile Landscape & Tablets (481px - 768px) */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 13px;
+    }
+    
+    /* Title Screen */
+    .title-screen h1 {
+        font-size: 48px;
+        margin: 20px 0;
+    }
+    
+    .title-screen .subtitle {
+        font-size: 16px;
+        margin: 15px 0;
+    }
+    
+    .title-screen .year {
+        font-size: 28px;
+    }
+    
     .title-tile {
         width: 50px;
         height: 60px;
         font-size: 24px;
     }
     
+    /* Game tiles */
     .tile {
         width: 50px;
         height: 50px;
         font-size: 24px;
     }
     
+    /* Wizard character */
     .wizard-character {
         transform: scale(0.7) translateY(-50%);
     }
@@ -1386,17 +1420,90 @@ body {
         font-size: 8px;
     }
     
+    /* Admin panel */
     .admin-container {
         padding: 10px;
     }
+    
+    /* Touch-Friendly Buttons */
+    button, .level-card, .session-card {
+        min-height: 44px; /* Apple's recommended touch target */
+        min-width: 44px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 255, 0, 0.3);
+    }
+    
+    /* Remove hover effects on touch devices */
+    button:hover, .level-card:hover {
+        transform: none;
+    }
+    
+    /* Add active state for touch feedback */
+    button:active, .level-card:active {
+        transform: scale(0.95);
+        background-color: var(--retro-green);
+    }
 }
 
-@media (max-width: 480px) {
+/* Mobile Portrait (320px - 480px) */
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 12px;
+        padding: 10px;
+    }
+    
+    /* Title Screen Mobile */
+    .title-screen h1 {
+        font-size: 36px;
+        margin: 15px 0;
+        letter-spacing: 2px;
+    }
+    
+    .title-screen .subtitle {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+    
+    .title-screen .year {
+        font-size: 24px;
+        margin-top: 15px;
+    }
+    
+    .title-screen .prompt {
+        font-size: 12px;
+        margin-top: 30px;
+    }
+    
     .title-tile {
         width: 40px;
         height: 50px;
         font-size: 18px;
         border: 2px solid var(--retro-white);
+    }
+    
+    /* Character Screen Mobile */
+    .character-screen .wizard {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .character-screen .wizard::before {
+        font-size: 60px;
+    }
+    
+    .character-screen h2 {
+        font-size: 20px;
+        margin-top: 20px;
+    }
+    
+    /* Game Screen Mobile */
+    .game-container {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    .header {
+        margin-bottom: 15px;
     }
     
     .tile {
@@ -1413,4 +1520,276 @@ body {
     .instructions-text {
         font-size: 6px;
     }
+    
+    /* Admin Panel Mobile */
+    .admin-container {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    .admin-container h1 {
+        font-size: 24px;
+    }
+    
+    .admin-container textarea {
+        min-height: 150px;
+        font-size: 12px;
+    }
+    
+    .admin-container button {
+        padding: 10px 15px;
+        font-size: 12px;
+        margin: 5px;
+    }
 }
+
+/* Extra Small Phones (< 375px) */
+@media screen and (max-width: 374px) {
+    body {
+        font-size: 11px;
+    }
+    
+    .title-screen h1 {
+        font-size: 28px;
+    }
+    
+    .tile {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+    }
+}
+
+/* ============================================
+   PHASE 3: MOBILE ON-SCREEN KEYBOARD
+   ============================================ */
+
+/* Mobile On-Screen Keyboard */
+.mobile-keyboard {
+    display: none; /* Hidden by default on desktop */
+    margin: 20px auto 10px;
+    max-width: 500px;
+    padding: 0 10px;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin: 4px 0;
+}
+
+.key-btn {
+    background-color: #555555;
+    color: #00FF00;
+    border: 2px solid #00AA00;
+    padding: 12px 8px;
+    font-family: 'Perfect DOS VGA 437', 'Courier New', monospace;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 32px;
+    flex: 1;
+    max-width: 42px;
+    text-align: center;
+    transition: all 0.1s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.key-btn.key-action {
+    max-width: 60px;
+    font-size: 12px;
+}
+
+.key-btn:active {
+    background-color: #00AA00;
+    color: #000000;
+    transform: scale(0.95);
+}
+
+.key-btn.correct {
+    background-color: #00AA00;
+    border-color: #00FF00;
+}
+
+.key-btn.present {
+    background-color: #AAAA00;
+    border-color: #FFFF55;
+}
+
+.key-btn.absent {
+    background-color: #333333;
+    border-color: #555555;
+    color: #666666;
+}
+
+/* Show keyboard on mobile */
+@media screen and (max-width: 768px) {
+    .mobile-keyboard {
+        display: block;
+    }
+    
+    .key-btn {
+        font-size: 13px;
+        padding: 10px 6px;
+    }
+    
+    /* Game Board Responsive - 768px */
+    .board {
+        gap: 4px;
+        margin: 15px auto;
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .board-row {
+        gap: 4px;
+        margin: 4px 0;
+    }
+    
+    /* Status Bar */
+    .status {
+        font-size: 14px;
+        padding: 8px;
+        margin: 10px 0;
+    }
+    
+    /* Input Area */
+    .input-area {
+        padding: 10px;
+        margin: 15px 0;
+    }
+    
+    .input-label {
+        font-size: 18px;
+        min-height: 30px;
+    }
+    
+    /* Controls */
+    .controls {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .controls button {
+        padding: 10px 20px;
+        font-size: 12px;
+        min-width: 100px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .key-btn {
+        font-size: 11px;
+        padding: 8px 4px;
+        min-width: 26px;
+        max-width: 36px;
+    }
+    
+    .key-btn.key-action {
+        max-width: 50px;
+        font-size: 10px;
+    }
+    
+    /* Game Board Responsive - 480px */
+    .board {
+        gap: 3px;
+        margin: 15px auto;
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    
+    .board-row {
+        gap: 3px;
+        margin: 3px 0;
+    }
+}
+
+/* Extra small phones - smaller tiles */
+@media screen and (max-width: 374px) {
+    .tile {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+}
+
+/* ============================================
+   PHASE 4: LEVEL SELECT & SESSION SELECT MOBILE
+   ============================================ */
+
+@media screen and (max-width: 768px) {
+    /* Level Select Mobile */
+    .level-grid {
+        grid-template-columns: 1fr; /* Stack vertically on mobile */
+        gap: 15px;
+        padding: 15px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .level-card {
+        padding: 20px;
+        min-height: 100px;
+    }
+    
+    .level-card h2 {
+        font-size: 24px;
+    }
+    
+    .level-card .level-info {
+        font-size: 12px;
+    }
+    
+    .level-card .lock-icon {
+        font-size: 36px;
+    }
+    
+    /* Session Select Mobile */
+    .session-list {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    .session-card {
+        padding: 15px;
+        margin: 10px 0;
+    }
+    
+    .session-card h3 {
+        font-size: 18px;
+    }
+    
+    /* Progress Bar */
+    .progress-bar {
+        margin: 10px 0;
+    }
+    
+    /* Back Button */
+    .back-button, .admin-link {
+        padding: 12px 20px;
+        font-size: 14px;
+        margin: 15px auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .level-grid {
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .level-card {
+        padding: 15px;
+        min-height: 80px;
+    }
+    
+    .level-card h2 {
+        font-size: 20px;
+        margin: 5px 0;
+    }
+}
+
+
