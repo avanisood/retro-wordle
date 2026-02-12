@@ -76,3 +76,11 @@ document.addEventListener('keydown', function(e) {
         navigateToGame();
     }
 });
+
+// Admin access shortcut: Ctrl + Alt + A
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.altKey && e.key === 'a') {
+        e.preventDefault();
+        window.location.href = 'admin.html';
+    }
+});

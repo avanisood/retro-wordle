@@ -60,3 +60,11 @@ document.addEventListener('keydown', function(e) {
         navigateToCharacterScreen();
     }
 });
+
+// Admin access shortcut: Ctrl + Alt + A
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.altKey && e.key === 'a') {
+        e.preventDefault();
+        window.location.href = 'admin.html';
+    }
+});
