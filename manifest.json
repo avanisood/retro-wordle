@@ -1,0 +1,22 @@
+{
+  "name": "Retro Wordle 1985",
+  "short_name": "Wordle85",
+  "description": "Classic 1985 CGA-style Wordle game",
+  "start_url": "/retro-wordle/",
+  "display": "standalone",
+  "background_color": "#0000AA",
+  "theme_color": "#0000AA",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/retro-wordle/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/retro-wordle/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

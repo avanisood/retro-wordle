@@ -1253,6 +1253,9 @@ function showModal(won) {
     // Setup button visibility and handlers
     setupModalButtons(won);
     
+    // Prevent background scrolling
+    document.body.classList.add('modal-open');
+    
     // Show modal
     modal.style.display = 'flex';
 }
@@ -1468,12 +1471,16 @@ function showSessionCompleteModal() {
     
     if (backToSessionsBtn) {
         backToSessionsBtn.onclick = () => {
+            // Allow background scrolling
+            document.body.classList.remove('modal-open');
             window.location.href = 'level-select.html';
         };
     }
     
     if (replaySessionBtn) {
         replaySessionBtn.onclick = () => {
+            // Allow background scrolling
+            document.body.classList.remove('modal-open');
             // Reset all levels in this session
             if (confirm('Reset all levels in this session and play again?')) {
                 resetSessionProgress();
@@ -1484,6 +1491,9 @@ function showSessionCompleteModal() {
     
     // Show the modal
     modal.classList.add('show');
+    
+    // Prevent background scrolling
+    document.body.classList.add('modal-open');
     
     // Play celebration sound (optional)
     playWinSound();
@@ -1590,6 +1600,8 @@ function playCelebrationSound() {
     const modal = document.getElementById('gameModal');
     if (modal) {
         modal.style.display = 'none';
+        // Allow background scrolling
+        document.body.classList.remove('modal-open');
     }
 
 // Clear the game board

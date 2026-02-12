@@ -8,6 +8,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="theme-color" content="#0000AA">
+    <link rel="manifest" href="/retro-wordle/manifest.json">
+    <link rel="icon" type="image/png" href="/retro-wordle/icon-192.png">
     <title>WORDLE - 1985 Edition</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -46,5 +48,12 @@
     </div>
     
     <script src="title.js"></script>
+    <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/retro-wordle/sw.js')
+        .then(reg => console.log('SW registered'))
+        .catch(err => console.log('SW error', err));
+    }
+    </script>
 </body>
 </html>

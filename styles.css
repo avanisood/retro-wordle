@@ -1681,38 +1681,180 @@ body {
 }
 
 @media screen and (max-width: 480px) {
-    .key-btn {
-        font-size: 11px;
-        padding: 8px 4px;
-        min-width: 26px;
-        max-width: 36px;
-    }
-    
-    .key-btn.key-action {
-        max-width: 50px;
-        font-size: 10px;
-    }
-    
-    /* Game Board Responsive - 480px */
-    .board {
-        gap: 3px;
-        margin: 15px auto;
+    /* Make everything more compact for small screens */
+    .game-container {
+        padding: 10px;
         max-width: 100%;
-        padding: 0 10px;
+    }
+    
+    .game-header {
+        margin-bottom: 10px;
+    }
+    
+    .title {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    
+    .level-progress {
+        margin-bottom: 10px;
+    }
+    
+    .progress-dot {
+        width: 8px;
+        height: 8px;
+        margin: 0 2px;
+    }
+    
+    /* Smaller game board */
+    .board {
+        gap: 2px;
+        margin: 10px auto;
+        max-width: 100%;
+        padding: 0 5px;
     }
     
     .board-row {
-        gap: 3px;
-        margin: 3px 0;
+        gap: 2px;
+        margin: 2px 0;
+    }
+    
+    .tile {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        border-width: 1px;
+    }
+    
+    /* Status bar more compact */
+    .status {
+        font-size: 12px;
+        padding: 5px;
+        margin: 8px 0;
+    }
+    
+    /* HIDE INPUT AREA ON SMALL SCREENS */
+    .input-area {
+        display: none;
+    }
+    
+    /* Message area compact */
+    .message-area {
+        margin: 5px 0;
+    }
+    
+    .game-message {
+        font-size: 12px;
+        padding: 5px;
+    }
+    
+    /* ULTRA-COMPACT KEYBOARD - ensure it fits */
+    .mobile-keyboard {
+        max-width: 100%;
+        padding: 0 2px;
+        margin: 8px auto 2px;
+        width: 100%;
+        box-sizing: border-box;
+        max-height: 120px; /* Ensure it doesn't take too much space */
+    }
+    
+    .keyboard-row {
+        gap: 1px;
+        margin: 1px 0;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .key-btn {
+        flex: 1;
+        min-width: 20px;
+        max-width: 28px;
+        padding: 4px 1px;
+        font-size: 9px;
+        border-width: 1px;
+        margin: 0;
+    }
+    
+    .key-btn.key-action {
+        flex: 0 0 auto;
+        width: 38px;
+        max-width: 38px;
+        font-size: 8px;
+        padding: 4px 1px;
     }
 }
 
 /* Extra small phones - smaller tiles */
 @media screen and (max-width: 374px) {
     .tile {
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+    
+    /* Game container even more compact */
+    .game-container {
+        padding: 5px;
+        max-height: 100vh; /* Fit within viewport */
+        overflow-y: auto; /* Allow scrolling if needed */
+    }
+    
+    .title {
+        font-size: 18px;
+    }
+    
+    .board {
+        gap: 1px;
+        margin: 5px auto;
+        padding: 0 2px;
+    }
+    
+    .board-row {
+        gap: 1px;
+        margin: 1px 0;
+    }
+    
+    .status {
+        font-size: 11px;
+        padding: 3px;
+        margin: 5px 0;
+    }
+    
+    .game-message {
+        font-size: 11px;
+        padding: 3px;
+    }
+    
+    /* ULTRA-COMPACT KEYBOARD for tiny screens */
+    .mobile-keyboard {
+        max-width: 100%;
+        padding: 0 1px;
+        margin: 5px auto 1px;
+        width: 100%;
+    }
+    
+    .keyboard-row {
+        gap: 0px;
+        margin: 0px 0;
+        width: 100%;
+    }
+    
+    .key-btn {
+        flex: 1;
+        min-width: 18px;
+        max-width: 24px;
+        padding: 3px 0px;
+        font-size: 8px;
+        border-width: 1px;
+        margin: 0;
+    }
+    
+    .key-btn.key-action {
+        flex: 0 0 auto;
+        width: 32px;
+        max-width: 32px;
+        font-size: 7px;
+        padding: 3px 0px;
     }
 }
 
@@ -1792,4 +1934,136 @@ body {
     }
 }
 
+/* ============================================
+   PHASE 6: MODAL & POPUP OPTIMIZATION
+   ============================================ */
+
+@media screen and (max-width: 768px) {
+    /* Modal Optimization */
+    .modal-content {
+        width: 90%;
+        max-width: 400px;
+        padding: 20px;
+        margin: 0 auto;
+    }
+    
+    .modal-content h2 {
+        font-size: 22px;
+        margin: 10px 0;
+    }
+    
+    .modal-content p {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin: 15px 0;
+    }
+    
+    .stat-item h3 {
+        font-size: 24px;
+    }
+    
+    .stat-item p {
+        font-size: 11px;
+    }
+    
+    .modal-content button {
+        padding: 12px 24px;
+        font-size: 14px;
+        margin: 8px;
+        min-width: 120px;
+    }
+    
+    /* Session Complete Modal */
+    .session-complete-content {
+        width: 90%;
+        max-width: 400px;
+        padding: 20px;
+        margin: 0 auto;
+    }
+    
+    .wizard-celebration {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    
+    .wizard-large {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
+    
+    .magic-sparkles {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    
+    .session-complete-title {
+        font-size: 20px;
+        margin: 10px 0;
+    }
+    
+    .wizard-message {
+        font-size: 14px;
+        margin: 10px 0;
+    }
+    
+    .session-complete-text {
+        font-size: 13px;
+        margin: 10px 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .modal-content button {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    /* Session Complete Modal - Small Screens */
+    .session-complete-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .wizard-large {
+        font-size: 40px;
+    }
+    
+    .magic-sparkles {
+        font-size: 20px;
+    }
+    
+    .session-complete-title {
+        font-size: 18px;
+    }
+    
+    .wizard-message {
+        font-size: 13px;
+    }
+    
+    .session-complete-text {
+        font-size: 12px;
+    }
+}
+
+/* Prevent background scrolling when modal is open */
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
 

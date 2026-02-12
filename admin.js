@@ -16,7 +16,7 @@ function checkAuth() {
     // Always prompt for password (no caching)
     const password = prompt('Enter admin password:');
     
-    if (password === 'wordle1985') {
+    if (password === 'littyandwitty') {
         // Show admin content
         const adminContent = document.getElementById('adminContent');
         if (adminContent) {
